@@ -1,20 +1,23 @@
 use std::process::Command;
-use std::fs::OpenOptions;
-use std::io::Write;
 use chrono::Local;
 
-use crate::log;
-use crate::log_error;
-use crate::log_verbose;
+use crate::utils::file_writer::FileWriter;
 
-pub struct Discovery {}
+use crate::{log, log_error, log_verbose};
+
+const DISCOVERY_LOG_FILE: &str = "discovery.log";
+
+pub struct Discovery {
+    file_writer: FileWriter,
+}
 
 impl Discovery {
-    pub fn new() -> Self {
-        Discovery {}
+    pub fn new(results_directory_global_path: &str) -> Self {
+        let result_path = format!("{}/{}", results_directory_global_path, DISCOVERY_LOG_FILE);
+        Discovery {
+            file_writer: FileWriter::new(result_path),
+        }
     }
-
-
 
     pub fn run(&self) {
         log!("[Discovery / T1087] Simulating Account Discovery...");
@@ -46,18 +49,11 @@ impl Discovery {
             }
         }
 
-        // Save to log file
-        let mut file = OpenOptions::new()
-            .append(true)
-            .create(true)
-            .open("simulation.log")
-            .expect("Unable to open log file");
-
-        if let Err(e) = writeln!(file, "{}", log_entry) {
-            log_error!("Couldn't write to log file: {}", e);
-        }
+        self.file_writer
+            .write(&log_entry)
+            .expect("Failed to write log entry");
 
         log!("[Discovery / T1087] Simulation complete.");
-        log!("[Discovery / T1087] Log entry saved to simulation.log");
+        log!("[Discovery / T1087] Log entry saved to {}", DISCOVERY_LOG_FILE);
     }
 }

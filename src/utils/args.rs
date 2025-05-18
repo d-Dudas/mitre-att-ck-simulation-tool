@@ -12,4 +12,8 @@ pub struct Args
     /// Verbose output
     #[arg(short, long)]
     pub verbose: bool,
+
+    /// results directory for results
+    #[arg(short, long, default_value = "results")]
+    pub results_dir: String,
 }
