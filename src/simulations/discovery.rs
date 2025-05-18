@@ -1,7 +1,7 @@
 use std::process::Command;
 use chrono::Local;
 
-use crate::utils::file_writer::FileWriter;
+use crate::utils::io::file_writer::FileWriter;
 
 use crate::{log, log_error, log_verbose};
 

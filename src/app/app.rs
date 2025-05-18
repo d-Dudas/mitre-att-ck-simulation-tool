@@ -2,7 +2,7 @@ use crate::log;
 use crate::simulations::discovery::Discovery;
 use crate::utils::args::Args;
 use crate::utils::logger::init_logger;
-use crate::utils::directory_manager::DirectoryManager;
+use crate::utils::io::directory_manager::DirectoryManager;
 
 pub struct App {
     args: Args,
