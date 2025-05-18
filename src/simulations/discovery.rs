@@ -1,13 +1,12 @@
 use std::process::Command;
 use chrono::Local;
 
-use crate::utils::io::file_writer::FileWriter;
-
-use crate::{log, log_error, log_verbose};
+use crate::utils::{io::file_writer::FileWriter, logger::Logger};
 
 const DISCOVERY_LOG_FILE: &str = "discovery.log";
 
 pub struct Discovery {
+    logger: Logger,
     file_writer: FileWriter,
 }
 
@@ -16,11 +15,12 @@ impl Discovery {
         let result_path = format!("{}/{}", results_directory_global_path, DISCOVERY_LOG_FILE);
         Discovery {
             file_writer: FileWriter::new(result_path),
+            logger: Logger::new("Discovery"),
         }
     }
 
     pub fn run(&self) {
-        log!("[Discovery / T1087] Simulating Account Discovery...");
+        self.logger.info("Simulating Account Discovery...");
 
         let output = Command::new("getent").arg("passwd").output();
 
@@ -33,18 +33,18 @@ impl Discovery {
             Ok(result) => {
                 if result.status.success() {
                     let stdout = String::from_utf8_lossy(&result.stdout);
-                    log_verbose!("{}", stdout);
+                    self.logger.verbose(format!("{}", stdout));
                     log_entry.push_str("Command successful\n");
                     log_entry.push_str(&stdout);
                 } else {
                     let stderr = String::from_utf8_lossy(&result.stderr);
-                    log_error!("Command failed: {}", stderr);
+                    self.logger.error(format!("Command failed: {}", stderr));
                     log_entry.push_str("Command failed\n");
                     log_entry.push_str(&stderr);
                 }
             }
             Err(e) => {
-                log_error!("Error executing command: {}", e);
+                self.logger.error(format!("Error executing command: {}", e));
                 log_entry.push_str(&format!("Execution error: {}\n", e));
             }
         }
@@ -53,7 +53,7 @@ impl Discovery {
             .write(&log_entry)
             .expect("Failed to write log entry");
 
-        log!("[Discovery / T1087] Simulation complete.");
-        log!("[Discovery / T1087] Log entry saved to {}", DISCOVERY_LOG_FILE);
+        self.logger.info("Simulation complete.");
+        self.logger.info(format!("Log entry saved to {}", DISCOVERY_LOG_FILE));
     }
 }
