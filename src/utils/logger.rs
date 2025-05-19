@@ -1,7 +1,13 @@
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{
+    AtomicBool,
+    Ordering
+};
 
 pub static VERBOSE: AtomicBool = AtomicBool::new(false);
 
+const INFO_LEVEL_PREFIX: &str = "INF";
+const ERROR_LEVEL_PREFIX: &str = "ERR";
+const VERBOSE_LEVEL_PREFIX: &str = "VER";
 
 pub struct Logger {
     prefix: String,
@@ -15,21 +21,21 @@ impl Logger {
         }
     }
 
-    fn log(&self, format: &str, args: impl std::fmt::Display) {
-        println!("{} [{}]: {}", Self::get_timestamp(), self.prefix, format.replace("{}", &args.to_string()));
+    fn log(&self, format: &str, args: impl std::fmt::Display, level_prefix: &str) {
+        println!("{} [{}][{}]: {}", Self::get_timestamp(), level_prefix, self.prefix, format.replace("{}", &args.to_string()));
     }
 
     pub fn info(&self, args: impl std::fmt::Display) {
-        self.log("{}", args);
+        self.log("{}", args, INFO_LEVEL_PREFIX);
     }
 
     pub fn error(&self, args: impl std::fmt::Display) {
-        eprintln!("{} [{}]: {}", Self::get_timestamp(), self.prefix, args);
+        eprintln!("{} [{}][{}]: {}", Self::get_timestamp(), ERROR_LEVEL_PREFIX, self.prefix, args);
     }
 
     pub fn verbose(&self, args: impl std::fmt::Display) {
         if VERBOSE.load(Ordering::SeqCst) {
-            self.log("{}", args);
+            self.log("{}", args, VERBOSE_LEVEL_PREFIX);
         }
     }
 

@@ -1,7 +1,10 @@
 use std::process::Command;
 use chrono::Local;
 
-use crate::utils::{io::file_writer::FileWriter, logger::Logger};
+use crate::utils::{
+    io::file_writer::FileWriter,
+    logger::Logger
+};
 
 const DISCOVERY_LOG_FILE: &str = "discovery.log";
 
