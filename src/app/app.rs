@@ -2,7 +2,8 @@ use crate::utils::args::Args;
 use crate::utils::io::directory_manager::DirectoryManager;
 use crate::simulations::{
     discovery::Discovery,
-    persistence::Persistence
+    persistence::Persistence,
+    execution::Execution
 };
 use crate::utils::logger::{
     Logger,
@@ -14,6 +15,7 @@ pub struct App {
     logger: Logger,
     discovery: Discovery,
     persistence: Persistence,
+    execution: Execution,
 }
 
 impl App {
@@ -28,6 +30,7 @@ impl App {
             logger,
             discovery: Discovery::new(&global_path),
             persistence: Persistence::new(&global_path),
+            execution: Execution::new(&global_path),
         }
     }
 
@@ -36,7 +39,8 @@ impl App {
 
         match self.args.technique.to_lowercase().as_str() {
             "t1087" | "discovery" => self.discovery.run(),
-            "T1543.003" | "persistence" => self.persistence.run(),
+            "t1543.003" | "persistence" => self.persistence.run(),
+            "t1059.004" | "execution" => self.execution.run(),
 
             _ => self.logger.error(format!("Unknown technique: {}", self.args.technique.to_string())),
         }

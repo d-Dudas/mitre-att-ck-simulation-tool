@@ -16,8 +16,7 @@ It is intended for security testing, detection engineering, and cybersecurity ed
 |----------------------|--------------|----------------------------------|
 | Discovery            | T1087        | Account Discovery               |
 | Persistence          | T1543.003    | Create or Modify Systemd Service |
-| Credential Access    | T1003.001    | Attempted Access to /etc/shadow |
-| Execution            | T1059.003    | User Execution via Bash Script  |
+| Execution            | T1059.004    | User Execution via Bash Script  |
 
 > All simulations are non-destructive and focus on realistic but safe approximations of attacker behavior.
 
