@@ -4,7 +4,8 @@ use crate::simulations::{
     discovery::Discovery,
     persistence::Persistence,
     execution::Execution,
-    ssh::Ssh
+    ssh::Ssh,
+    dll_injection::DllInjection
 };
 use crate::utils::logger::{
     Logger,
@@ -18,6 +19,7 @@ pub struct App {
     persistence: Persistence,
     execution: Execution,
     ssh: Ssh,
+    dll_injection: DllInjection,
 }
 
 impl App {
@@ -34,10 +36,11 @@ impl App {
             persistence: Persistence::new(&global_path),
             execution: Execution::new(&global_path),
             ssh: Ssh::new(&global_path),
+            dll_injection: DllInjection::new(&global_path),
         }
     }
 
-    pub fn run(&self) {
+    pub fn run(&mut self) {
         self.logger.info("Starting application...");
 
         match self.args.technique.to_lowercase().as_str() {
@@ -45,6 +48,7 @@ impl App {
             "t1543.003" | "persistence" => self.persistence.run(),
             "t1059.004" | "execution" => self.execution.run(),
             "t1021.004" | "ssh" => self.ssh.run(),
+            "t1055.001" | "dll_injection" | "dll" => self.dll_injection.run(),
 
             _ => self.logger.error(format!("Unknown technique: {}", self.args.technique.to_string())),
         }

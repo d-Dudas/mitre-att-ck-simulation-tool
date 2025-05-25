@@ -18,6 +18,7 @@ It is intended for security testing, detection engineering, and cybersecurity ed
 | Persistence          | T1543.003    | Create or Modify Systemd Service |
 | Execution            | T1059.004    | User Execution via Bash Script  |
 | Remote Service: SSH  | T1021.004    | Adversaries may use SSH to connect to remote systems to move laterally or maintain access |
+| Dll injection       | T1055.001    | Process Injection via DLL Injection |
 
 > All simulations are non-destructive and focus on realistic but safe approximations of attacker behavior.
 
