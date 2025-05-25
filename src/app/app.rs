@@ -3,7 +3,8 @@ use crate::utils::io::directory_manager::DirectoryManager;
 use crate::simulations::{
     discovery::Discovery,
     persistence::Persistence,
-    execution::Execution
+    execution::Execution,
+    ssh::Ssh
 };
 use crate::utils::logger::{
     Logger,
@@ -16,6 +17,7 @@ pub struct App {
     discovery: Discovery,
     persistence: Persistence,
     execution: Execution,
+    ssh: Ssh,
 }
 
 impl App {
@@ -31,6 +33,7 @@ impl App {
             discovery: Discovery::new(&global_path),
             persistence: Persistence::new(&global_path),
             execution: Execution::new(&global_path),
+            ssh: Ssh::new(&global_path),
         }
     }
 
@@ -41,6 +44,7 @@ impl App {
             "t1087" | "discovery" => self.discovery.run(),
             "t1543.003" | "persistence" => self.persistence.run(),
             "t1059.004" | "execution" => self.execution.run(),
+            "t1021.004" | "ssh" => self.ssh.run(),
 
             _ => self.logger.error(format!("Unknown technique: {}", self.args.technique.to_string())),
         }

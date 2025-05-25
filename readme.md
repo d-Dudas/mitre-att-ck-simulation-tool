@@ -17,6 +17,7 @@ It is intended for security testing, detection engineering, and cybersecurity ed
 | Discovery            | T1087        | Account Discovery               |
 | Persistence          | T1543.003    | Create or Modify Systemd Service |
 | Execution            | T1059.004    | User Execution via Bash Script  |
+| Remote Service: SSH  | T1021.004    | Adversaries may use SSH to connect to remote systems to move laterally or maintain access |
 
 > All simulations are non-destructive and focus on realistic but safe approximations of attacker behavior.
 
